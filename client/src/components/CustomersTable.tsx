@@ -1,5 +1,11 @@
 import { useState, useEffect } from 'react'
 import type { Customer } from '../types'
+import {
+  deleteCustomer,
+  getCustomers,
+  registerCustomer,
+  updateCustomer
+} from '../services/customers.service'
 
 export default function CustomersTable() {
   const [customers, setCustomers] = useState<Customer[]>([])
@@ -17,8 +23,8 @@ export default function CustomersTable() {
 
   const fetchCustomers = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/customers')
-      const data = await response.json()
+      const data = await getCustomers()
+
       setCustomers(data)
       setIsLoading(false)
     } catch (error) {
@@ -28,25 +34,16 @@ export default function CustomersTable() {
   }
 
   const handleAddCustomer = async () => {
-    // Implement logic to add a new customer
     try {
-      // Make API request to add customer
-      // After successful addition, fetch customers again to update the list
-      await fetch('http://localhost:8000/api/customers', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      })
-      // Clear the form data
+      await registerCustomer(formData)
+
       setFormData({
         id: 0,
         nombre: '',
         email: '',
         telefono: ''
       })
-      // Fetch customers again to update the list
+
       fetchCustomers()
     } catch (error) {
       console.error('Error adding customer:', error)
@@ -54,25 +51,16 @@ export default function CustomersTable() {
   }
 
   const handleUpdateCustomer = async (id: number) => {
-    // Implement logic to update customer with the given id
     try {
-      // Make API request to update customer
-      // After successful update, fetch customers again to update the list
-      await fetch(`http://localhost:8000/api/customers/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      })
-      // Clear the form data
+      await updateCustomer(id, formData)
+
       setFormData({
         id: 0,
         nombre: '',
         email: '',
         telefono: ''
       })
-      // Fetch customers again to update the list
+
       fetchCustomers()
     } catch (error) {
       console.error('Error updating customer:', error)
@@ -80,14 +68,9 @@ export default function CustomersTable() {
   }
 
   const handleDeleteCustomer = async (id: number) => {
-    // Implement logic to delete customer with the given id
     try {
-      // Make API request to delete customer
-      // After successful deletion, fetch customers again to update the list
-      await fetch(`http://localhost:8000/api/customers/${id}`, {
-        method: 'DELETE'
-      })
-      // Fetch customers again to update the list
+      await deleteCustomer(id)
+
       fetchCustomers()
     } catch (error) {
       console.error('Error deleting customer:', error)
