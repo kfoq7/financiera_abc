@@ -2,7 +2,7 @@
 node_modules
 
 # IDE
-.vcode
+.vscode
 
 # Local enviroments
 .env
