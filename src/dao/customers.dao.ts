@@ -3,9 +3,9 @@ import type { Customer } from '../types'
 
 export class CustomerDAO {
   static async registrarCliente(customer: Customer) {
-    const { name, email, phone } = customer
+    const { nombre, email, telefono } = customer
     const query = 'INSERT INTO clientes (nombre, email, telefono) VALUES (?, ?, ?)'
-    const values = [name, email, phone]
+    const values = [nombre, email, telefono]
     await pool.query(query, values)
   }
 
@@ -16,9 +16,9 @@ export class CustomerDAO {
   }
 
   static async modificarCliente(id: number, cliente: Customer) {
-    const { name, email, phone } = cliente
+    const { nombre, email, telefono } = cliente
     const query = 'UPDATE clientes SET nombre = ?, email = ?, telefono = ? WHERE id = ?'
-    const values = [name, email, phone, id]
+    const values = [nombre, email, telefono, id]
     await pool.query(query, values)
   }
 
